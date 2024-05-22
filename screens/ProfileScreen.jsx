@@ -9,9 +9,10 @@ import { useNavigation } from "@react-navigation/native";
 const ProfileScreen = () => {
     const navigation = useNavigation();
     const userContext = useContext(Context);
+    const rnd_id = new Date().getTime()
     const [playlists, setPlaylists] = useState([{
         image: "https://picsum.photos/200",
-        name: "Under The Tree",
+        name: "My favourite",
         info: "My favourite song",
         id: userContext.user?.playlist[0]?.id || null
     }]);
@@ -26,7 +27,7 @@ const ProfileScreen = () => {
 
                 <View style={{ marginBottom: 15 }}>
                     <Image
-                        source="https://pic.re/image"
+                        source={`https://picsum.photos/seed/${rnd_id}/300/300`}
                         contentFit='cover'
                         style={{
                             width: 200,

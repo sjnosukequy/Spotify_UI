@@ -52,7 +52,7 @@ const EditProfileScreen = () => {
             });
 
             if (response.data) {
-                const user = {...response.data[0], 'playlist': user_Context.user.playlist}
+                const user = { ...response.data[0], 'playlist': user_Context.user.playlist }
                 user_Context.setUser(user)
                 showToast('Update successfully', 'success');
                 // console.log(user_Context.user.id)
@@ -98,7 +98,7 @@ const EditProfileScreen = () => {
                     <View style={{ height: 40 }} />
 
                     <Image
-                        source="https://pic.re/image"
+                        source="https://picsum.photos/200"
                         contentFit='cover'
                         style={{
                             width: 200,
@@ -278,6 +278,25 @@ const EditProfileScreen = () => {
                                 fontFamily: "Lexend_700Bold",
                             }}>Log out</Text>
                     </Pressable>
+                    <Text
+                        style={{
+                            fontSize: 20,
+                            color: 'white',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            fontFamily: "Lexend_700Bold",
+                            marginTop: 30
+                        }}>Want to be an artist?</Text>
+                    <Text
+                        style={{
+                            fontSize: 20,
+                            color: 'white',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            fontFamily: "Lexend_400Regular",
+                            marginTop: 5,
+                            marginBottom: 30
+                        }}>Visit http://muzzix.us.to/ </Text>
 
                 </ScrollView>
             </SafeAreaView>

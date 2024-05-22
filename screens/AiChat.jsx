@@ -71,7 +71,8 @@ const AiChat = () => {
     return (
         <LinearGradient colors={["#030008", "#111111"]} style={{ flex: 1 }} >
             <SafeAreaView style={{ paddingHorizontal: 20, paddingBottom: 20 }}>
-                <View style={{ flexDirection: 'row' }}>
+
+                <View style={{ flexDirection: 'row', paddingRight: 7 }}>
                     <View style={{ marginLeft: 'auto', marginRight: 'auto', marginBottom: 20 }}>
                         <Text style={{ color: "white", fontSize: 20, fontFamily: "Lexend_400Regular", }}>AI CHAT MUSIC</Text>
                     </View>
@@ -82,52 +83,11 @@ const AiChat = () => {
                     </Pressable>
                 </View>
 
-                <ScrollView style={{
-                    height: playback_state_flag ? windowHeight * 75 / 100 : windowHeight * 68 / 100,
-                }}>
-                    {
-                        chat.map((item, index) => {
-                            // <Text style={{color: 'white'}}>{item}</Text>
-                            if (index % 2 == 0)
-                                return (
-                                    <View key={index} style={{
-                                        alignSelf: 'flex-end',
-                                    }}>
-                                        <Text style={{
-                                            backgroundColor: '#0084ff',
-                                            padding: 5,
-                                            borderRadius: 5,
-                                            color: 'white',
-                                            marginBottom: 10,
-                                            fontFamily: "Lexend_400Regular",
-                                            maxWidth: windowWidth * 50 / 100
-                                        }}> {item} </Text>
-                                    </View>
-                                )
-                            else
-                                return (
-                                    <View key={index}>
-                                        <Text style={{
-                                            color: 'white',
-                                            padding: 5,
-                                            borderRadius: 5,
-                                            backgroundColor: '#242526',
-                                            marginBottom: 10,
-                                            alignSelf: 'flex-start',
-                                            fontFamily: "Lexend_400Regular",
-                                            maxWidth: windowWidth * 50 / 100
-                                        }}>{item}</Text>
-                                    </View>
-                                )
-                        })
-                    }
-                </ScrollView>
-
                 <View style={{
                     flexDirection: 'row',
                     gap: 10,
                     alignItems: "center",
-                    marginTop: 20
+                    marginBottom: 30
                 }}>
                     <TextInput style={{
                         fontFamily: "Lexend_400Regular",
@@ -145,6 +105,47 @@ const AiChat = () => {
                         <MaterialCommunityIcons name="send-circle" size={40} color="white" />
                     </Pressable>
                 </View>
+                <View>
+                    <ScrollView >
+                        {
+                            chat.map((item, index) => {
+                                // <Text style={{color: 'white'}}>{item}</Text>
+                                if (index % 2 == 0)
+                                    return (
+                                        <View key={index} style={{
+                                            alignSelf: 'flex-end',
+                                        }}>
+                                            <Text style={{
+                                                backgroundColor: '#0084ff',
+                                                padding: 5,
+                                                borderRadius: 5,
+                                                color: 'white',
+                                                marginBottom: 30,
+                                                fontFamily: "Lexend_400Regular",
+                                                maxWidth: windowWidth * 50 / 100
+                                            }}> {item} </Text>
+                                        </View>
+                                    )
+                                else
+                                    return (
+                                        <View key={index}>
+                                            <Text style={{
+                                                color: 'white',
+                                                padding: 5,
+                                                borderRadius: 5,
+                                                backgroundColor: '#242526',
+                                                marginBottom: 30,
+                                                alignSelf: 'flex-start',
+                                                fontFamily: "Lexend_400Regular",
+                                                maxWidth: windowWidth * 50 / 100
+                                            }}>{item}</Text>
+                                        </View>
+                                    )
+                            })
+                        }
+                    </ScrollView>
+                </View>
+
             </SafeAreaView>
         </LinearGradient>
     )
