@@ -3,13 +3,15 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import AlbumCard from '../components/AlbumCard';
-import { React, useState, useEffect } from 'react'
+import { React, useState, useEffect, useContext, memo } from 'react'
 import axios from "../api/axios";
 import { decode } from 'html-entities';
-
+import Context from '../Providers/Context';
 
 
 const HomeScreen = () => {
+  // const userContext = useContext(Context);
+  // console.log(userContext.user)
   const [fetching, setFetch] = useState(true);
   const [data, setData] = useState([]);
 
@@ -48,7 +50,7 @@ const HomeScreen = () => {
             color: 'white', fontFamily
               : "Lexend_700Bold", fontSize: 25, marginBottom: 35
           }}>{message}</Text>
-          {fetching ? <View>
+          {fetching ? <View style={{ marginTop: 300 }}>
             <ActivityIndicator size="large" color="#00ff00" />
           </View> : data.map((item, index) => (
             <View key={index} style={{ marginBottom: 10 }}>

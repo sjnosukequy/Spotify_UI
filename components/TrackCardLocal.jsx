@@ -3,6 +3,8 @@ import React, { useContext, useState, useEffect, memo } from "react";
 import { Image } from 'expo-image';
 import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
+import { Ionicons } from '@expo/vector-icons';
+import { Octicons } from '@expo/vector-icons';
 import { decode } from 'html-entities';
 import TrackPlayer from "react-native-track-player";
 import { addTrack } from "../controller/musicController";
@@ -12,7 +14,6 @@ import { useActiveTrack, useIsPlaying, useProgress } from "react-native-track-pl
 import Context from '../Providers/Context';
 
 const TrackCard = ({ item }) => {
-    const active_track = useActiveTrack()
     const user_Context = useContext(Context);
     const [data, setData] = useState();
     const [fetching, setFetch] = useState(true);
@@ -26,13 +27,13 @@ const TrackCard = ({ item }) => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(`/download?url=https://www.youtube.com/${item.link}`);
-            setData(response.data);
+            // const response = await axios.get(`/download?url=https://www.youtube.com/${item.link}`);
+            // setData(response.data);
             setFetch(false);
             if (item?.playList) {
                 await item.splayList(playlist => [...playlist, {
                     id: playlist.length,
-                    url: response.data,
+                    url: item.link,
                     artwork: item.image,
                     title: item.name,
                     artist: item.artist,
@@ -41,7 +42,7 @@ const TrackCard = ({ item }) => {
                 if (item.playListMode)
                     await addTrack({
                         id: item.playList.length,
-                        url: response.data,
+                        url: item.link,
                         artwork: item.image,
                         title: item.name,
                         artist: item.artist,
@@ -55,12 +56,13 @@ const TrackCard = ({ item }) => {
 
     const [isPlaying, setPlaying] = useState(false);
     const [likeColor, setLikeColor] = useState(false);
+    const [remove, setRemove] = useState(false);
 
-    function showToast(mressage) {
+    function showToast(message, type = 'error') {
         Toast.show({
-            type: 'error',
+            type: type,
             text1: 'Hello',
-            text2: mressage
+            text2: message
         });
     }
 
@@ -70,7 +72,7 @@ const TrackCard = ({ item }) => {
                 setPlaying(true);
                 let track = {
                     id: '1',
-                    url: data,
+                    url: item.link,
                     artwork: item.image,
                     title: item.name,
                     artist: item.artist,
@@ -81,7 +83,8 @@ const TrackCard = ({ item }) => {
                 setTimeout(() => {
                     setPlaying(false)
                 }, 3000);
-            } else
+            }
+            else
                 showToast('The song is playing 👋')
         }
         else
@@ -95,7 +98,7 @@ const TrackCard = ({ item }) => {
                 'key': '8/k0Y-EJj5S>#/OIA>XB?/q7}',
                 'playlistid': user_Context.user?.playlist[0]?.id,
                 'name': item.name,
-                'link': data,
+                'link': item.link,
                 'image': item?.image || `https://picsum.photos/seed/${rnd_id}/300/300`,
                 'artist': item.artist,
             }).then((res) => {
@@ -110,6 +113,38 @@ const TrackCard = ({ item }) => {
                 'playlistid': user_Context.user?.playlist[0]?.id,
                 'name': item.name,
             }).then((res) => {
+                // console.log(res.data)
+            }).catch((Error) => {
+                showToast("The song does not exist in the favourite")
+            });
+        }
+    }
+
+    async function handleDel() {
+        setRemove(!remove);
+        if (remove) {
+            await axios.post(`/addPlaylistTrack`, {
+                'key': '8/k0Y-EJj5S>#/OIA>XB?/q7}',
+                'playlistid': user_Context.user?.playlist[0]?.id,
+                'name': item.name,
+                'link': item.link,
+                'image': item?.image || `https://picsum.photos/seed/${rnd_id}/300/300`,
+                'artist': item.artist,
+            }).then((res) => {
+                if (Array.from(res.data).length == 0)
+                    showToast("The song already exist in the favourite")
+                else
+                    showToast("Added The song from favourite", 'success')
+            }).catch((Error) => {
+                showToast("The song already exist in the favourite")
+            });
+        } else {
+            await axios.post(`/delPlaylistTrack`, {
+                'key': '8/k0Y-EJj5S>#/OIA>XB?/q7}',
+                'playlistid': user_Context.user?.playlist[0]?.id,
+                'name': item.name,
+            }).then((res) => {
+                showToast("Removed The song from favourite")
                 // console.log(res.data)
             }).catch((Error) => {
                 showToast("The song does not exist in the favourite")
@@ -148,19 +183,31 @@ const TrackCard = ({ item }) => {
                     {decode(item.artist)}
                 </Text>
             </View>
-
-            <Pressable
-                onPress={handleLike}
-                style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: 7,
-                    marginHorizontal: 10,
-                }}>
-                {
-                    likeColor ? <AntDesign name="heart" size={24} color="#3FFF00" /> : <AntDesign name="hearto" size={24} color="gray" />
-                }
-            </Pressable>
+            {
+                item?.disableLike ? <Pressable
+                    onPress={handleDel}
+                    style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: 7,
+                        marginHorizontal: 10,
+                    }}>
+                    {
+                        remove ? <Octicons name="issue-closed" size={24} color="white" /> : <Octicons name="circle-slash" size={24} color="white" />
+                    }
+                </Pressable> : <Pressable
+                    onPress={handleLike}
+                    style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: 7,
+                        marginHorizontal: 10,
+                    }}>
+                    {
+                        likeColor ? <AntDesign name="heart" size={24} color="#3FFF00" /> : <AntDesign name="hearto" size={24} color="gray" />
+                    }
+                </Pressable>
+            }
         </Pressable>
     );
 };

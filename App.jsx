@@ -7,6 +7,7 @@ import { useFonts, Lexend_400Regular, Lexend_700Bold, Lexend_300Light } from '@e
 import TrackPlayer from 'react-native-track-player';
 import { setupPlayer } from './controller/musicController';
 import Toast from 'react-native-toast-message';
+import Provider from './Providers/Provider';
 
 
 
@@ -44,10 +45,10 @@ export default function App() {
   }
 
   return (
-    <>
+    <Provider>
       <Navigation />
       <Toast />
-    </>
+    </Provider>
   );
 }
 

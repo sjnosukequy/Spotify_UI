@@ -1,13 +1,19 @@
 import { StyleSheet, Text, View, Pressable } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, memo } from "react";
 import { Image } from 'expo-image';
 import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
-const playListCard = ({ item }) => {
+const PlayListCard = ({ item }) => {
+    const navigate = useNavigation()
+
+    function Clicked() {
+        navigate.navigate("playlist", { ...item })
+    }
 
     return (
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginVertical: 10 }}>
+        <Pressable style={{ flexDirection: "row", alignItems: "center", gap: 8, marginVertical: 10 }} onPress={Clicked}>
             <Image
                 contentFit="cover"
                 source={
@@ -17,12 +23,12 @@ const playListCard = ({ item }) => {
             />
             <View>
                 <Text style={{ color: "white", fontFamily: "Lexend_400Regular" }}>{item?.name}</Text>
-                <Text style={{ color: "gray", marginTop: 7, fontFamily: "Lexend_300Light" }}>0 likes</Text>
+                <Text style={{ color: "gray", marginTop: 7, fontFamily: "Lexend_300Light" }}>{item?.info}</Text>
             </View>
-        </View>
+        </Pressable>
     );
 };
 
-export default playListCard;
+export default memo(PlayListCard);
 
 const styles = StyleSheet.create({});

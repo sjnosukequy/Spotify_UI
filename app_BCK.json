@@ -4,7 +4,7 @@
     "slug": "musicproj",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/muzzix-icon.jpg",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -16,22 +16,11 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.MusicProj",
-      "infoPlist": {
-        "NSAppTransportSecurity": {
-          "NSExceptionDomains": {
-            "example.com": {
-              "NSIncludesSubdomains": true,
-              "NSTemporaryExceptionAllowsInsecureHTTPLoads": true,
-              "NSTemporaryExceptionMinimumTLSVersion": "TLSv1.1"
-            }
-          }
-        }
-      }
+      "bundleIdentifier": "com.anonymous.MusicProj"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/muzzix-icon.jpg",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.anonymous.MusicProj"
@@ -40,15 +29,7 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-font",
-      [
-        "expo-build-properties",
-        {
-          "android": {
-            "usesCleartextTraffic": true
-          }
-        }
-      ]
+      "expo-font"
     ],
     "extra": {
       "eas": {

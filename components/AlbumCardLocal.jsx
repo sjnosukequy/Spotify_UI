@@ -5,11 +5,11 @@ import React, {memo} from "react";
 import AlbumScreen from "../screens/AlbumScreen";
 import { decode } from 'html-entities';
 
-const AlbumCard = ({ item }) => {
+const AlbumCardLocal = ({ item }) => {
   const navigate = useNavigation()
 
   function Clicked() {
-    navigate.navigate("album", { ...item })
+    navigate.navigate("albumlocal", { ...item })
   }
 
   const rnd_id = new Date().getTime()
@@ -54,6 +54,6 @@ const AlbumCard = ({ item }) => {
   );
 };
 
-export default memo(AlbumCard);
+export default memo(AlbumCardLocal);
 
 const styles = StyleSheet.create({});
