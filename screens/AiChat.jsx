@@ -70,9 +70,8 @@ const AiChat = () => {
 
     return (
         <LinearGradient colors={["#030008", "#111111"]} style={{ flex: 1 }} >
-            <SafeAreaView style={{ paddingHorizontal: 20, paddingBottom: 20 }}>
-
-                <View style={{ flexDirection: 'row', paddingRight: 7 }}>
+            <SafeAreaView style={{ paddingHorizontal: 20, paddingBottom: 20, flex: 1 }}>
+                <View style={{ flexDirection: 'row', paddingRight: 8, marginTop: 10 }}>
                     <View style={{ marginLeft: 'auto', marginRight: 'auto', marginBottom: 20 }}>
                         <Text style={{ color: "white", fontSize: 20, fontFamily: "Lexend_400Regular", }}>AI CHAT MUSIC</Text>
                     </View>
@@ -87,7 +86,8 @@ const AiChat = () => {
                     flexDirection: 'row',
                     gap: 10,
                     alignItems: "center",
-                    marginBottom: 30
+                    marginBottom: 30,
+                    marginLeft: 10
                 }}>
                     <TextInput style={{
                         fontFamily: "Lexend_400Regular",
@@ -105,8 +105,9 @@ const AiChat = () => {
                         <MaterialCommunityIcons name="send-circle" size={40} color="white" />
                     </Pressable>
                 </View>
-                <View>
-                    <ScrollView >
+
+                <View style={{flex: 1}}>
+                    <ScrollView>
                         {
                             chat.map((item, index) => {
                                 // <Text style={{color: 'white'}}>{item}</Text>

@@ -85,21 +85,30 @@ function Main_menu() {
                 title: '',
                 headerTransparent: true,
                 headerTintColor: 'white',
-                animation: 'fade'
+                animation: 'fade',
+                headerBackTitleStyle: {
+                    fontFamily: 'Lexend_400Regular'
+                }
             }} />
             <Stack.Screen name="albumlocal" component={AlbumScreenLocal} options={{
                 headerShown: true,
                 title: '',
                 headerTransparent: true,
                 headerTintColor: 'white',
-                animation: 'fade'
+                animation: 'fade',
+                headerBackTitleStyle: {
+                    fontFamily: 'Lexend_400Regular'
+                }
             }} />
             <Stack.Screen name="playlist" component={PlayListScreen} options={{
                 headerShown: true,
                 title: '',
                 headerTransparent: true,
                 headerTintColor: 'white',
-                animation: 'fade'
+                animation: 'fade',
+                headerBackTitleStyle: {
+                    fontFamily: 'Lexend_400Regular'
+                }
             }} />
         </Stack.Navigator>
     )
@@ -131,6 +140,9 @@ function Navigation() {
                     headerTransparent: true,
                     headerTintColor: 'white',
                     animation: "ios",
+                    headerBackTitleStyle: {
+                        fontFamily: 'Lexend_400Regular'
+                    }
                 }} />
                 <Stack.Screen name="playerFull" component={TrackPlayerScreen} options={{
                     headerShown: false,

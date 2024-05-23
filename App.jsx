@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { React, useState, useEffect, useCallback } from 'react'
 import Navigation from './StackNavigator';
@@ -8,6 +7,7 @@ import TrackPlayer from 'react-native-track-player';
 import { setupPlayer } from './controller/musicController';
 import Toast from 'react-native-toast-message';
 import Provider from './Providers/Provider';
+import { StatusBar } from 'expo-status-bar';
 
 
 
@@ -46,6 +46,7 @@ export default function App() {
 
   return (
     <Provider>
+      <StatusBar backgroundColor="#000000" style="light"></StatusBar>
       <Navigation />
       <Toast />
     </Provider>
