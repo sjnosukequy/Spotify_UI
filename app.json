@@ -4,7 +4,7 @@
     "slug": "musicproj",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/muzzix-icon.jpg",
+    "icon": "./assets/muzzix-icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -31,7 +31,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/muzzix-icon.jpg",
+        "foregroundImage": "./assets/muzzix-icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.anonymous.MusicProj"
