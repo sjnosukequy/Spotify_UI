@@ -143,7 +143,7 @@ const TrackCard = ({ item }) => {
                     {/* {item?.track?.name} */}
                     {decode(item.name)}
                 </Text>
-                <Text style={{ marginTop: 4, color: "#989898", fontFamily: "Lexend_300Light", }}>
+                <Text style={{ marginTop: 4, color: "#989898", fontFamily: "Lexend_300Light", }} numberOfLines={1}>
                     {/* {item?.track?.artists[0].name} */}
                     {decode(item.artist)}
                 </Text>

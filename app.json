@@ -19,6 +19,7 @@
       "bundleIdentifier": "com.anonymous.MusicProj",
       "infoPlist": {
         "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads" : true,
           "NSExceptionDomains": {
             "example.com": {
               "NSIncludesSubdomains": true,

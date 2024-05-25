@@ -27,6 +27,7 @@ const ProfileScreen = () => {
 
                 <View style={{ marginBottom: 15 }}>
                     <Image
+                        transition={1000}
                         source={`https://picsum.photos/seed/${rnd_id}/300/300`}
                         contentFit='cover'
                         style={{

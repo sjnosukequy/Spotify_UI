@@ -96,7 +96,7 @@ const TrackPlayerScreen = () => {
                 <View style={{ flexDirection: 'row', marginTop: 30, paddingHorizontal: 20 }}>
                     <View style={{ flex: 1, paddingRight: 50 }}>
                         <TextTicker
-                            scrollSpeed={20}
+                            scrollSpeed={50}
                             numberOfLines={1}
                             style={{
                                 color: "white",
@@ -107,8 +107,9 @@ const TrackPlayerScreen = () => {
                             {active_track?.title || "Tile"}
                             {/* {decode(route.params["title"])} */}
                         </TextTicker>
-                        <Text
+                        <TextTicker
                             numberOfLines={1}
+                            scrollSpeed={100}
                             style={{
                                 color: "gray",
                                 fontSize: 17,
@@ -116,7 +117,7 @@ const TrackPlayerScreen = () => {
                             }}
                         >
                             {active_track?.artist || "Artist"}
-                        </Text>
+                        </TextTicker>
                     </View>
                     <Pressable
                         onPress={handleLike}

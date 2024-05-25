@@ -11,6 +11,7 @@ import TrackPlayer from "react-native-track-player";
 import { addTrack } from "../controller/musicController";
 import Toast from 'react-native-toast-message';
 import { SafeAreaView } from "react-native-safe-area-context";
+import ImageColors from 'react-native-image-colors'
 
 
 const AlbumScreen = () => {

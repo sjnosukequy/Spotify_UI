@@ -41,9 +41,9 @@ const smallTrackPlayer = () => {
                     {active_track?.title || "Test Title"}
                 </TextTicker>
 
-                <Text style={{ marginTop: 4, color: "#989898", fontFamily: "Lexend_300Light", }}>
+                <TextTicker style={{ marginTop: 4, color: "#989898", fontFamily: "Lexend_300Light", }} numberOfLines={1} scrollSpeed={100}>
                     {active_track?.artist || "Test Artist"}
-                </Text>
+                </TextTicker>
             </View>
 
             <Pressable onPress={HandlePlay} style={{ marginRight: 10 }}>

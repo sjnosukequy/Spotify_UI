@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, FlatList, ActivityIndicator, Pressable, TextInput } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, FlatList, ActivityIndicator, Pressable, TextInput, Dimensions } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
@@ -16,20 +16,25 @@ import TrackCardLocal from '../components/TrackCardLocal';
 
 
 const SearchScreen = () => {
+    const windowHeight = Dimensions.get('screen').height;
     const [text, setText] = useState("");
-    const [querry, setQuerry] = useState("AOT");
-    const [fetching, setFetch] = useState(true);
-    const [data, setData] = useState([]);
+    const [querry, setQuerry] = useState("");
+    const [fetching, setFetch] = useState(false);
+    const [searching, setSearching] = useState(false)
+    const [data, setData] = useState({
+        "songs": [],
+        "albums": [],
+        "album2": [],
+        "song2": []
+    });
 
     const debounced = useDebouncedCallback((value) => {
         if (value.length == 0)
-            value = 'AOT'
-        setFetch(true)
-        setData({
-            "songs": [],
-            "albums": [],
-            "album2": []
-        })
+            return;
+        if (fetching)
+            return;
+        setData({})
+        setSearching(true)
         setQuerry(value)
     },
         // delay in ms
@@ -42,9 +47,9 @@ const SearchScreen = () => {
     //     })
     // }, [navigation])
 
-    useEffect(() => {
-        fetchData();
-    }, []);
+    // useEffect(() => {
+    //     fetchData();
+    // }, []);
 
     useEffect(() => {
         fetchData();
@@ -53,15 +58,21 @@ const SearchScreen = () => {
     const fetchData = async () => {
         try {
             // console.log('in')
-            await axios.get(`/search?url=${querry}`)
-                .then((res) => {
-                    setData(res.data);
-                    setFetch(false);
-                })
-                .catch((error) => {
-                    showToast('Please Try Again Later')
-                });
+            if (searching) {
+                setFetch(true)
+                await axios.get(`/search?url=${querry}`)
+                    .then((res) => {
+                        setData(res.data);
+                        setFetch(false);
+                    })
+                    .catch((error) => {
+                        setFetch(false);
+                        showToast('Please Try Again Later')
+                    });
+                setSearching(false)
+            }
         } catch (error) {
+            setFetch(false);
             console.error('Error fetching data:', error);
         }
     };
@@ -101,8 +112,10 @@ const SearchScreen = () => {
                         <TextInput
                             value={text}
                             onChangeText={(text) => {
-                                debounced(text)
-                                setText(text)
+                                if (!fetching) {
+                                    debounced(text)
+                                    setText(text)
+                                }
                             }}
                             placeholder="Search  "
                             placeholderTextColor={"white"}
@@ -123,35 +136,39 @@ const SearchScreen = () => {
                 <ScrollView style={{ marginTop: 20, marginHorizontal: 20, }}>
 
                     {fetching ?
-                        <View style={{ marginTop: 350 }}>
+                        <View style={{ marginTop: windowHeight * 40 / 100 }}>
                             <ActivityIndicator size="large" color="#00ff00" />
                         </View>
                         :
-                        <View>
-
-                            <View style={{ marginBottom: 10 }}>
-                                <Text style={{ color: 'white', fontFamily: "Lexend_700Bold", fontSize: 20 }}> Songs </Text>
-                                {
-                                    data['songs'].map((item, index) => (
-                                        <TrackCard item={item} key={index}></TrackCard>
-                                    ))
-                                }
-                            </View>
-
-                            <View style={{ marginBottom: 10 }}>
-                                <Text style={{ color: 'white', fontFamily: "Lexend_700Bold", fontSize: 20 }}> Albums </Text>
-                                <FlatList
-                                    data={data.albums}
-                                    horizontal
-                                    showsHorizontalScrollIndicator={false}
-                                    renderItem={({ item, index }) => (
-                                        <AlbumCard item={item} key={index}></AlbumCard>
-                                    )}
-                                />
-                            </View>
+                        <View style={{marginBottom: 80}}>
 
                             {
-                                data.album2.length ? <View style={{ marginBottom: 10 }}>
+                                data.songs?.length ? <View style={{ marginBottom: 10 }}>
+                                    <Text style={{ color: 'white', fontFamily: "Lexend_700Bold", fontSize: 20 }}> Songs </Text>
+                                    {
+                                        data['songs'].map((item, index) => (
+                                            <TrackCard item={item} key={index}></TrackCard>
+                                        ))
+                                    }
+                                </View> : null
+                            }
+
+                            {
+                                data.albums?.length ? <View style={{ marginBottom: 10 }}>
+                                    <Text style={{ color: 'white', fontFamily: "Lexend_700Bold", fontSize: 20 }}> Albums </Text>
+                                    <FlatList
+                                        data={data.albums}
+                                        horizontal
+                                        showsHorizontalScrollIndicator={false}
+                                        renderItem={({ item, index }) => (
+                                            <AlbumCard item={item} key={index}></AlbumCard>
+                                        )}
+                                    />
+                                </View> : null
+                            }
+
+                            {
+                                data.album2?.length ? <View style={{ marginBottom: 10 }}>
                                     <Text style={{ color: 'white', fontFamily: "Lexend_700Bold", fontSize: 20 }}> Local Albums </Text>
                                     <FlatList
                                         data={data.album2}
@@ -163,11 +180,10 @@ const SearchScreen = () => {
                                     />
                                     {/* <View style={{height: 30}}></View> */}
                                 </View> : null
-
                             }
 
                             {
-                                data.song2.length ? <View style={{ marginBottom: 80 }}>
+                                data.song2?.length ? <View style={{  }}>
                                     <Text style={{ color: 'white', fontFamily: "Lexend_700Bold", fontSize: 20 }}> Songs Local </Text>
                                     {
                                         data['song2'].map((item, index) => (
@@ -175,7 +191,6 @@ const SearchScreen = () => {
                                         ))
                                     }
                                 </View> : null
-
                             }
 
                         </View>
