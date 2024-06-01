@@ -20,14 +20,15 @@ const PlayListScreen = () => {
 
     // console.log(route.params)
 
-    const [fetching, setFetch] = useState(true);
-    const [data, setData] = useState([]);
-    const [customColor, setCustomColor] = useState({ avg: '#131624' });
+    const [fetching, setFetch] = useState(true); // State to track if data is being fetched
+    const [data, setData] = useState([]); // State to store fetched data
+    const [customColor, setCustomColor] = useState({ avg: '#131624' }); // State to store custom color for gradient
 
-    const [playList, setPlayList] = useState([]);
-    const [playing, setPlaying] = useState(false);
-    const [playListMode, setPlayListMode] = useState(false);
+    const [playList, setPlayList] = useState([]); // State to store playlist
+    const [playing, setPlaying] = useState(false); // State to track if music is playing
+    const [playListMode, setPlayListMode] = useState(false); // State to track if playlist mode is activated
 
+    // Function to display toast message when song is loading
     function showToast() {
         Toast.show({
             type: 'error',
@@ -37,27 +38,29 @@ const PlayListScreen = () => {
     }
 
     useEffect(() => {
-        fetchData();
-        fetchColor();
+        fetchData(); // Fetch data when component mounts
+        fetchColor(); // Fetch custom color for gradient when component mounts
     }, []);
 
+     // Function to toggle playlist mode and play/pause music
     async function playlistmode() {
         if (fetching == false) {
             if (!playListMode) {
                 console.log("Enter playlist mode")
-                await addTrack(playList, true);
-                setPlayListMode(true);
+                await addTrack(playList, true);// Add tracks to playlist
+                setPlayListMode(true);// Set playlist mode to true
             }
-            setPlaying(!playing)
+            setPlaying(!playing)// Toggle playing state
             console.log((await TrackPlayer.getQueue()).length)
             if (playing)
-                TrackPlayer.pause();
+                TrackPlayer.pause();// Pause music if playing
             else
-                TrackPlayer.play();
+                TrackPlayer.play();// Play music if paused
         } else
-            showToast();
+            showToast();// Display toast message if song is still loading
     }
 
+    // Function to fetch playlist data
     const fetchData = async () => {
         try {
             const response = await axios.get(`/getPlaylistSongs?url=${route.params["id"]}`);
@@ -68,6 +71,7 @@ const PlayListScreen = () => {
         }
     };
 
+    // Function to fetch custom color for gradient
     const fetchColor = async () => {
         try {
             const response = await axios.post('/getcolor', { url: route.params["image"] });

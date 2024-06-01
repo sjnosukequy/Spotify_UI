@@ -20,9 +20,10 @@ const LoginScreen = () => {
     const data = useState();
     const user_Context = useContext(Context);
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");// State for email input
+    const [password, setPassword] = useState("");// State for password input
 
+     // Function to display toast message
     function showToast(message) {
         Toast.show({
             type: 'error',
@@ -30,7 +31,7 @@ const LoginScreen = () => {
             text2: message
         });
     }
-
+// Effect hook to check if user is already logged in
     useEffect(() => {
         storage
             .load({
@@ -56,7 +57,7 @@ const LoginScreen = () => {
                 }
             })
     }, [])
-
+ // Function to authenticate user
     async function authenticate() {
         try {
             const response = await axios.post(`/getUser`, {
@@ -95,7 +96,7 @@ const LoginScreen = () => {
             console.log(error);
         }
     }
-
+    // Function to navigate to registration screen
     function alrRegis() {
         navigation.navigate('register')
     }

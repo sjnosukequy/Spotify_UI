@@ -5,24 +5,32 @@ import React, {memo} from "react";
 import AlbumScreen from "../screens/AlbumScreen";
 import { decode } from 'html-entities';
 
+// Component for rendering each local album card
 const AlbumCardLocal = ({ item }) => {
-  const navigate = useNavigation()
+  const navigate = useNavigation();
 
+  // Function to handle press event when a local album card is clicked
   function Clicked() {
-    navigate.navigate("albumlocal", { ...item })
+    navigate.navigate("albumlocal", { ...item });
   }
 
-  const rnd_id = new Date().getTime()
+  // Generate a random id for the image URL to prevent caching
+  const rnd_id = new Date().getTime();
+
+  // If item.img is null, generate a placeholder image URL using lorem picsum
   if (item.img == null)
     item.img = `https://picsum.photos/seed/${rnd_id}/300/300`;
+
   return (
     <Pressable style={{ margin: 10 }} onPress={Clicked}>
+      {/* Display the local album cover image */}
       <Image
         transition={1000}
         style={{ width: 130, height: 130, borderRadius: 5 }}
         contentFit="cover"
         source={item.img}
       />
+      {/* Display the local album title */}
       <Text
         numberOfLines={1}
         style={{
@@ -33,9 +41,10 @@ const AlbumCardLocal = ({ item }) => {
           marginTop: 5,
         }}
       >
-        {decode(item.title)}
+        {decode(item.title)} {/* Decode HTML entities in the title */}
       </Text>
 
+      {/* Display additional local album information */}
       <Text
         numberOfLines={1}
         style={{
@@ -46,14 +55,12 @@ const AlbumCardLocal = ({ item }) => {
           marginTop: 1,
         }}
       >
-        {/* {item?.name} */}
-        {decode(item.info)}
+        {decode(item.info)} {/* Decode HTML entities in the additional info */}
       </Text>
-
     </Pressable>
   );
 };
 
-export default memo(AlbumCardLocal);
+export default memo(AlbumCardLocal); // Memoize the component for performance optimization
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({}); // Define styles for the component

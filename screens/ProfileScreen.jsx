@@ -16,7 +16,7 @@ const ProfileScreen = () => {
         info: "My favourite song",
         id: userContext.user?.playlist[0]?.id || null
     }]);
-
+    // Function to navigate to the edit profile screen
     function editProfile() {
         navigation.navigate('editProfile')
     }
@@ -24,7 +24,7 @@ const ProfileScreen = () => {
     return (
         <LinearGradient colors={["#727272", "#111111"]} end={{ x: 0.5, y: 0.4 }} style={{ flex: 1 }}>
             <ScrollView style={{ marginTop: 50 }}>
-
+                {/* User profile information */}
                 <View style={{ marginBottom: 15 }}>
                     <Image
                         transition={1000}
@@ -47,7 +47,8 @@ const ProfileScreen = () => {
                         </Text>
                     </View>
                 </View>
-
+                
+                 {/* Button to navigate to edit profile screen */}
                 <Pressable style={{ marginLeft: "auto", marginRight: "auto", backgroundColor: "#3A3A3A", paddingVertical: 5, paddingHorizontal: 15, borderRadius: 25 }} onPress={editProfile}>
                     <Text style={{ color: "white", fontFamily: "Lexend_400Regular" }}>
                         Edit Profile

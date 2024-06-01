@@ -13,24 +13,31 @@ import Toast from 'react-native-toast-message';
 import { useActiveTrack, useIsPlaying, useProgress } from "react-native-track-player";
 import Context from '../Providers/Context';
 
+// Component for rendering each track card
 const TrackCard = ({ item }) => {
-    const user_Context = useContext(Context);
-    const [data, setData] = useState();
-    const [fetching, setFetch] = useState(true);
-    const rnd_id = new Date().getTime();
+    const user_Context = useContext(Context); // Access user context
+    const [data, setData] = useState(); // State for storing fetched data
+    const [fetching, setFetch] = useState(true); // State for fetching status
+    const rnd_id = new Date().getTime(); // Generate a random ID for image URL
+
+    // If the item image is null, set a placeholder image URL
     if (item.image == null)
         item.image = `https://picsum.photos/seed/${rnd_id}/300/300`;
 
+    // Fetch data when the component mounts
     useEffect(() => {
         fetchData();
     }, []);
 
+    // Function to fetch data from the server
     const fetchData = async () => {
         try {
+            // Simulated fetch operation
             // const response = await axios.get(`/download?url=https://www.youtube.com/${item.link}`);
             // setData(response.data);
             setFetch(false);
             if (item?.playList) {
+                // Add the track to the playlist
                 await item.splayList(playlist => [...playlist, {
                     id: playlist.length,
                     url: item.link,
@@ -39,6 +46,7 @@ const TrackCard = ({ item }) => {
                     artist: item.artist,
                     isLiveStream: false,
                 }])
+                // Add the track to the track player if playListMode is enabled
                 if (item.playListMode)
                     await addTrack({
                         id: item.playList.length,
@@ -54,10 +62,11 @@ const TrackCard = ({ item }) => {
         }
     };
 
-    const [isPlaying, setPlaying] = useState(false);
-    const [likeColor, setLikeColor] = useState(false);
-    const [remove, setRemove] = useState(false);
+    const [isPlaying, setPlaying] = useState(false); // State for playing status
+    const [likeColor, setLikeColor] = useState(false); // State for like button color
+    const [remove, setRemove] = useState(false); // State for remove button
 
+    // Function to display a toast message
     function showToast(message, type = 'error') {
         Toast.show({
             type: type,
@@ -66,6 +75,7 @@ const TrackCard = ({ item }) => {
         });
     }
 
+    // Function to handle press event on the track card
     async function handlePress() {
         if (!fetching) {
             if (!isPlaying) {
@@ -91,9 +101,11 @@ const TrackCard = ({ item }) => {
             showToast('The song is still loading 👋')
     }
 
+    // Function to handle like button press
     async function handleLike() {
-        setLikeColor(!likeColor);
+        setLikeColor(!likeColor); // Toggle like button color
         if (!likeColor) {
+            // Add the track to the user's favorite playlist
             await axios.post(`/addPlaylistTrack`, {
                 'key': '8/k0Y-EJj5S>#/OIA>XB?/q7}',
                 'playlistid': user_Context.user?.playlist[0]?.id,
@@ -103,11 +115,12 @@ const TrackCard = ({ item }) => {
                 'artist': item.artist,
             }).then((res) => {
                 if (Array.from(res.data).length == 0)
-                    showToast("The song already exist in the favourite")
+                    showToast("The song already exists in favorites")
             }).catch((Error) => {
-                showToast("The song already exist in the favourite")
+                showToast("The song already exists in favorites")
             });
         } else {
+            // Remove the track from the user's favorite playlist
             await axios.post(`/delPlaylistTrack`, {
                 'key': '8/k0Y-EJj5S>#/OIA>XB?/q7}',
                 'playlistid': user_Context.user?.playlist[0]?.id,
@@ -115,14 +128,16 @@ const TrackCard = ({ item }) => {
             }).then((res) => {
                 // console.log(res.data)
             }).catch((Error) => {
-                showToast("The song does not exist in the favourite")
+                showToast("The song does not exist in favorites")
             });
         }
     }
 
+    // Function to handle remove button press
     async function handleDel() {
-        setRemove(!remove);
+        setRemove(!remove); // Toggle remove button
         if (remove) {
+            // Add the track to the user's favorite playlist
             await axios.post(`/addPlaylistTrack`, {
                 'key': '8/k0Y-EJj5S>#/OIA>XB?/q7}',
                 'playlistid': user_Context.user?.playlist[0]?.id,

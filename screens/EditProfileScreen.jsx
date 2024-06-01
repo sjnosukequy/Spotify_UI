@@ -16,22 +16,25 @@ import storage from '../services/storage';
 
 const EditProfileScreen = () => {
 
-    const windowWidth = Dimensions.get('window').width;
-    const width_80 = windowWidth * 85 / 100;
-    const windowHeight = Dimensions.get('screen').height;
-    const navigation = useNavigation();
-    const user_Context = useContext(Context);
+    const windowWidth = Dimensions.get('window').width;// Get window width
+    const width_80 = windowWidth * 85 / 100;// Calculate 85% of window width
+    const windowHeight = Dimensions.get('screen').height;// Get screen height
+    const navigation = useNavigation();// Get navigation object
+    const user_Context = useContext(Context);// Get user context
 
+    // State variables
     const [email, setEmail] = useState(user_Context.user.email);
     const [password, setPassword] = useState(user_Context.user.password);
     const [nickName, setNickName] = useState(user_Context.user.nickname);
     const [userName, setUserName] = useState(user_Context.user.username);
-
     const [isArtist, setIsArtist] = useState(false);
+
+    // Function to toggle artist status
     function artistCheck() {
         setIsArtist(!isArtist);
     }
 
+    // Function to show toast notification
     function showToast(message, type) {
         Toast.show({
             type: type,
@@ -40,6 +43,7 @@ const EditProfileScreen = () => {
         });
     }
 
+     // Function to authenticate and update user profile
     async function authenticate() {
         try {
             const response = await axios.post(`/updateUser`, {
@@ -65,6 +69,7 @@ const EditProfileScreen = () => {
         }
     }
 
+    // Function to perform logout
     function alrLogin() {
         user_Context.setUser({
             'id': 0,
@@ -84,6 +89,7 @@ const EditProfileScreen = () => {
         <LinearGradient colors={["#040306", "#131624"]} style={{ flex: 1 }} >
             <SafeAreaView>
                 <ScrollView style={{ marginTop: 50 }}>
+                    {/* Title */}   
                     <Text
                         style={{
                             color: "white",
@@ -96,7 +102,7 @@ const EditProfileScreen = () => {
                     </Text>
 
                     <View style={{ height: 40 }} />
-
+                     {/* Profile Image */}
                     <Image
                         source="https://picsum.photos/200"
                         contentFit='cover'
@@ -107,7 +113,7 @@ const EditProfileScreen = () => {
                             borderRadius: 100,
                             marginLeft: 'auto', marginRight: 'auto'
                         }} />
-
+                    {/* Email */}
                     <Text
                         style={{
                             color: "gray",
@@ -136,7 +142,7 @@ const EditProfileScreen = () => {
                             borderColor: "gray"
                         }}
                     />
-
+                     {/* User name */}
                     <Text
                         style={{
                             color: "gray",
@@ -165,7 +171,7 @@ const EditProfileScreen = () => {
                             borderColor: "gray"
                         }}
                     />
-
+                    {/* Nick name */}
                     <Text
                         style={{
                             color: "gray",
@@ -194,7 +200,7 @@ const EditProfileScreen = () => {
                             borderColor: "gray"
                         }}
                     />
-
+                    {/* Password */}
                     <Text
                         style={{
                             color: "gray",
@@ -235,6 +241,7 @@ const EditProfileScreen = () => {
                         }}>Are you an Artist?</Text>
                     </View> */}
 
+                    {/* Update Button */}
                     <Pressable
                         onPress={authenticate}
                         style={{
@@ -256,7 +263,8 @@ const EditProfileScreen = () => {
                                 fontFamily: "Lexend_700Bold",
                             }}>Update</Text>
                     </Pressable>
-
+                    
+                    {/* Logout Button */}
                     <Pressable
                         onPress={alrLogin}
                         style={{
@@ -278,6 +286,8 @@ const EditProfileScreen = () => {
                                 fontFamily: "Lexend_700Bold",
                             }}>Log out</Text>
                     </Pressable>
+
+                     {/* Artist Option */}
                     <Text
                         style={{
                             fontSize: 20,

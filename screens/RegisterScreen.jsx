@@ -25,12 +25,13 @@ const RegisterScreen = () => {
     const [userName, setUserName] = useState("");
 
     const user_Context = useContext(Context);
-
+    // Function to toggle artist status
     const [isArtist, setIsArtist] = useState(false);
     function artistCheck() {
         setIsArtist(!isArtist);
     }
 
+     // Function to display toast message
     function showToast(message) {
         Toast.show({
             type: 'error',
@@ -39,30 +40,7 @@ const RegisterScreen = () => {
         });
     }
 
-    // useEffect(() => {
-    //     storage
-    //         .load({
-    //             key: 'loginState',
-    //         })
-    //         .then(ret => {
-    //             navigation.replace('main')
-    //             console.log(ret.user);
-    //         })
-    //         .catch(err => {
-    //             // any exception including data not found
-    //             // goes to catch()
-    //             // console.warn(err.message);
-    //             switch (err.name) {
-    //                 case 'NotFoundError':
-    //                     // TODO;
-    //                     break;
-    //                 case 'ExpiredError':
-    //                     // TODO
-    //                     break;
-    //             }
-    //         })
-    // }, [])
-
+    // Function to authenticate user registration
     async function authenticate() {
         try {
             const response = await axios.post(`/addUser`, {
@@ -120,6 +98,7 @@ const RegisterScreen = () => {
 
     }
 
+    // Function to navigate to the login screen
     function alrLogin() {
         navigation.navigate('login')
     }

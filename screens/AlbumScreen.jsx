@@ -26,6 +26,7 @@ const AlbumScreen = () => {
   const [playing, setPlaying] = useState(false);
   const [playListMode, setPlayListMode] = useState(false);
 
+  // Function to show toast notification
   function showToast() {
     Toast.show({
       type: 'error',
@@ -39,6 +40,7 @@ const AlbumScreen = () => {
     fetchColor();
   }, []);
 
+  // Function to toggle playlist mode
   async function playlistmode() {
     if (fetching == false) {
       if (playList.length > 3) {
@@ -60,6 +62,7 @@ const AlbumScreen = () => {
       showToast();
   }
 
+  // Function to fetch album data
   const fetchData = async () => {
     try {
       const response = await axios.get(`/playlist?url=${route.params["link"]}`);
@@ -70,6 +73,7 @@ const AlbumScreen = () => {
     }
   };
 
+  // Function to fetch colors from album image
   const fetchColor = async () => {
     try {
       const response = await axios.post('/getcolor', { url: route.params["img"] });

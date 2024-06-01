@@ -1,64 +1,68 @@
+// Importing necessary modules and constants from react-native-track-player
 import TrackPlayer, {
-    AppKilledPlaybackBehavior,
-    Capability,
-    RepeatMode,
+  AppKilledPlaybackBehavior, // Enum for defining behavior when the app is killed
+  Capability, // Enum for defining player capabilities
+  RepeatMode, // Enum for defining repeat modes (not used in this code)
 } from 'react-native-track-player';
-  
+
+// Function to set up the track player
 export async function setupPlayer() {
-  let isSetup = false;
-  try {
-    await TrackPlayer.getActiveTrackIndex();
-    isSetup = true;
-  }
-  catch {
-    await TrackPlayer.setupPlayer();
-    await TrackPlayer.updateOptions({
-      android: {
-        appKilledPlaybackBehavior:
-          AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification,
-      },
-      capabilities: [
-        Capability.Play,
-        Capability.Pause,
-        Capability.Stop,
-        Capability.SeekTo,
-        Capability.Skip,
-        Capability.SkipToNext,
-        Capability.SkipToPrevious,
-        Capability.JumpForward,
-        Capability.JumpBackward,
-      ],
-      compactCapabilities: [
-        Capability.Play,
-        Capability.Pause,
-        Capability.SkipToNext,
-        Capability.SkipToPrevious,
-        Capability.Stop,
-      ],
-      notificationCapabilities:[
-        Capability.Play,
-        Capability.Pause,
-        Capability.SkipToNext,
-        Capability.SkipToPrevious,
-        Capability.Stop,
-      ],
-      progressUpdateEventInterval: 2,
-      forwardJumpInterval: 2,
-    });
+let isSetup = false; // Variable to track if the player is set up
+try {
+  // Attempt to get the active track index to check if the player is already set up
+  await TrackPlayer.getActiveTrackIndex();
+  isSetup = true; // If successful, set isSetup to true
+} catch {
+  // If an error occurs, set up the player
+  await TrackPlayer.setupPlayer();
+  // Update the player options
+  await TrackPlayer.updateOptions({
+    android: {
+      appKilledPlaybackBehavior: AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification, // Define behavior when the app is killed
+    },
+    capabilities: [
+      Capability.Play, // Enable play capability
+      Capability.Pause, // Enable pause capability
+      Capability.Stop, // Enable stop capability
+      Capability.SeekTo, // Enable seek to capability
+      Capability.Skip, // Enable skip capability
+      Capability.SkipToNext, // Enable skip to next capability
+      Capability.SkipToPrevious, // Enable skip to previous capability
+      Capability.JumpForward, // Enable jump forward capability
+      Capability.JumpBackward, // Enable jump backward capability
+    ],
+    compactCapabilities: [
+      Capability.Play, // Enable play capability in compact view
+      Capability.Pause, // Enable pause capability in compact view
+      Capability.SkipToNext, // Enable skip to next capability in compact view
+      Capability.SkipToPrevious, // Enable skip to previous capability in compact view
+      Capability.Stop, // Enable stop capability in compact view
+    ],
+    notificationCapabilities:[
+      Capability.Play, // Enable play capability in notifications
+      Capability.Pause, // Enable pause capability in notifications
+      Capability.SkipToNext, // Enable skip to next capability in notifications
+      Capability.SkipToPrevious, // Enable skip to previous capability in notifications
+      Capability.Stop, // Enable stop capability in notifications
+    ],
+    progressUpdateEventInterval: 2, // Interval in seconds for progress update events
+    forwardJumpInterval: 2, // Interval in seconds for forward jump
+  });
 
-    isSetup = true;
-  }
-  finally {
-    return isSetup;
-  }
+  isSetup = true; // Set isSetup to true after setting up the player and updating options
+} finally {
+  return isSetup; // Return the setup status
+}
 }
 
+// Function to add a track to the player
 export async function addTrack(track, reset) {
-  if(reset)
-    await TrackPlayer.reset();
-  await TrackPlayer.add(track);
+if (reset)
+  await TrackPlayer.reset(); // Reset the player if reset flag is true
+await TrackPlayer.add(track); // Add the track to the player
 }
 
+// Example track data for testing purposes
 // track = [
 //   {
 //     id: '1',

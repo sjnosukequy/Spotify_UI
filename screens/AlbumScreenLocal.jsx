@@ -13,11 +13,12 @@ import Toast from 'react-native-toast-message';
 import { SafeAreaView } from "react-native-safe-area-context";
 import TrackCardLocal from "../components/TrackCardLocal";
 
-
+// Functional component for displaying local album details
 const AlbumScreenLocal = () => {
-    const route = useRoute();
-    const navigation = useNavigation();
+    const route = useRoute();// Get the route object
+    const navigation = useNavigation();// Get the navigation object
 
+     // State variables
     const [fetching, setFetch] = useState(true);
     const [data, setData] = useState([]);
     const [customColor, setCustomColor] = useState({ avg: '#131624' });
@@ -26,6 +27,7 @@ const AlbumScreenLocal = () => {
     const [playing, setPlaying] = useState(false);
     const [playListMode, setPlayListMode] = useState(false);
 
+     // Function to show toast notification
     function showToast() {
         Toast.show({
             type: 'error',
@@ -33,12 +35,13 @@ const AlbumScreenLocal = () => {
             text2: 'The song is still loading 👋'
         });
     }
-
+    // Fetch album data and color when component mounts
     useEffect(() => {
         fetchData();
         fetchColor();
     }, []);
 
+    // Function to toggle playlist mode
     async function playlistmode() {
         if (fetching == false) {
             if (!playListMode) {
@@ -56,6 +59,7 @@ const AlbumScreenLocal = () => {
             showToast();
     }
 
+    // Function to toggle playlist mode
     const fetchData = async () => {
         try {
             const response = await axios.get(`/getAlbumSong?url=${route.params["id"]}`);
@@ -66,6 +70,7 @@ const AlbumScreenLocal = () => {
         }
     };
 
+    // Function to fetch colors from album image
     const fetchColor = async () => {
         try {
             const response = await axios.post('/getcolor', { url: route.params["img"] });
@@ -79,6 +84,7 @@ const AlbumScreenLocal = () => {
         <LinearGradient colors={[`${customColor.avg}`, "#111111"]} end={{ x: 0.5, y: 0.4 }} style={{ flex: 1 }}>
             <SafeAreaView>
                 <ScrollView style={{ marginTop: 50 }}>
+                    {/* Display album cover */}
                     <View style={{ flexDirection: "row", padding: 12 }}>
                         <View style={{ flex: 1, alignItems: "center" }}>
                             <Image
@@ -88,6 +94,7 @@ const AlbumScreenLocal = () => {
                             />
                         </View>
                     </View>
+                     {/* Display album title */}
                     <Text
                         style={{
                             color: "white",
@@ -99,7 +106,7 @@ const AlbumScreenLocal = () => {
                     >
                         {decode(route.params["title"])}
                     </Text>
-
+                     {/* Display album information */}
                     <View style={{ flexDirection: 'row', paddingHorizontal: 20, marginTop: 10 }}>
                         <View style={{ flex: 1, paddingRight: 50 }}>
                             <Text
@@ -114,6 +121,7 @@ const AlbumScreenLocal = () => {
                                 {decode(route.params["info"])}
                             </Text>
                         </View>
+                        {/* Display play/pause button */}
                         <Pressable
                             style={{
                             }}
@@ -124,11 +132,12 @@ const AlbumScreenLocal = () => {
 
                         </Pressable>
                     </View>
-
+                    {/* Display loading indicator if data is being fetched */}    
                     {
                         fetching ? <View style={{ marginTop: 150 }}>
                             <ActivityIndicator size="large" color="#00ff00" />
                         </View> : <View style={{ paddingHorizontal: 10, marginTop: 20 }}>
+                            {/* Render TrackCardLocal component for each track in the album */}
                             {
                                 data.map((item, index) => {
                                     item.playList = playList;

@@ -40,21 +40,12 @@ const SearchScreen = () => {
         // delay in ms
         1000
     );
-    // const navigation = useNavigation();
-    // useLayoutEffect(() => {
-    //     navigation.setOptions({
-    //         headerShown: false,
-    //     })
-    // }, [navigation])
-
-    // useEffect(() => {
-    //     fetchData();
-    // }, []);
-
+    
     useEffect(() => {
         fetchData();
     }, [querry]);
 
+    // Function to fetch data based on search query
     const fetchData = async () => {
         try {
             // console.log('in')
@@ -77,6 +68,7 @@ const SearchScreen = () => {
         }
     };
 
+     // Function to display toast message
     function showToast(message) {
         Toast.show({
             type: 'error',

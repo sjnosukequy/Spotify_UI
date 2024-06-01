@@ -11,19 +11,24 @@ import Toast from 'react-native-toast-message';
 import { useActiveTrack, useIsPlaying, useProgress } from "react-native-track-player";
 import Context from '../Providers/Context';
 
+// Component for rendering each track card
 const TrackCard = ({ item }) => {
-    const active_track = useActiveTrack()
-    const user_Context = useContext(Context);
-    const [data, setData] = useState();
-    const [fetching, setFetch] = useState(true);
-    const rnd_id = new Date().getTime();
+    const active_track = useActiveTrack(); // Get the currently active track
+    const user_Context = useContext(Context); // Access user context
+    const [data, setData] = useState(); // State for storing fetched data
+    const [fetching, setFetch] = useState(true); // State for fetching status
+    const rnd_id = new Date().getTime(); // Generate a random ID for image URL
+
+    // If the item image is null, set a placeholder image URL
     if (item.image == null)
         item.image = `https://picsum.photos/seed/${rnd_id}/300/300`;
 
+    // Fetch data when the component mounts
     useEffect(() => {
         fetchData();
     }, []);
 
+    // Function to fetch data from the server
     const fetchData = async () => {
         try {
             const response = await axios.get(`/download?url=https://www.youtube.com/${item.link}`);
@@ -53,17 +58,19 @@ const TrackCard = ({ item }) => {
         }
     };
 
-    const [isPlaying, setPlaying] = useState(false);
-    const [likeColor, setLikeColor] = useState(false);
+    const [isPlaying, setPlaying] = useState(false); // State for playing status
+    const [likeColor, setLikeColor] = useState(false); // State for like button color
 
-    function showToast(mressage) {
+    // Function to display a toast message
+    function showToast(message) {
         Toast.show({
             type: 'error',
             text1: 'Hello',
-            text2: mressage
+            text2: message
         });
     }
 
+    // Function to handle press event on the track card
     async function handlePress() {
         if (!fetching) {
             if (!isPlaying) {
@@ -88,9 +95,11 @@ const TrackCard = ({ item }) => {
             showToast('The song is still loading 👋')
     }
 
+    // Function to handle like button press
     async function handleLike() {
-        setLikeColor(!likeColor);
+        setLikeColor(!likeColor); // Toggle like button color
         if (!likeColor) {
+            // Add the track to the user's favorite playlist
             await axios.post(`/addPlaylistTrack`, {
                 'key': '8/k0Y-EJj5S>#/OIA>XB?/q7}',
                 'playlistid': user_Context.user?.playlist[0]?.id,
@@ -100,11 +109,12 @@ const TrackCard = ({ item }) => {
                 'artist': item.artist,
             }).then((res) => {
                 if (Array.from(res.data).length == 0)
-                    showToast("The song already exist in the favourite")
+                    showToast("The song already exists in favorites")
             }).catch((Error) => {
-                showToast("The song already exist in the favourite")
+                showToast("The song already exists in favorites")
             });
         } else {
+            // Remove the track from the user's favorite playlist
             await axios.post(`/delPlaylistTrack`, {
                 'key': '8/k0Y-EJj5S>#/OIA>XB?/q7}',
                 'playlistid': user_Context.user?.playlist[0]?.id,
@@ -112,7 +122,7 @@ const TrackCard = ({ item }) => {
             }).then((res) => {
                 // console.log(res.data)
             }).catch((Error) => {
-                showToast("The song does not exist in the favourite")
+                showToast("The song does not exist in favorites")
             });
         }
     }
@@ -121,6 +131,7 @@ const TrackCard = ({ item }) => {
         <Pressable
             onPress={handlePress}
             style={{ flexDirection: "row", alignItems: "center", padding: 10 }}>
+            {/* Display the track image */}
             <Image style={{ width: 50, height: 50, marginRight: 10 }}
                 contentFit="cover"
                 source={item.image}
@@ -128,6 +139,7 @@ const TrackCard = ({ item }) => {
             />
 
             <View style={{ flex: 1, marginRight: 30 }}>
+                {/* Display the track name */}
                 <Text
                     numberOfLines={1}
                     style={
@@ -140,15 +152,15 @@ const TrackCard = ({ item }) => {
                             : { fontFamily: "Lexend_700Bold", fontSize: 14, color: "white" }
                     }
                 >
-                    {/* {item?.track?.name} */}
                     {decode(item.name)}
                 </Text>
+                {/* Display the track artist */}
                 <Text style={{ marginTop: 4, color: "#989898", fontFamily: "Lexend_300Light", }} numberOfLines={1}>
-                    {/* {item?.track?.artists[0].name} */}
                     {decode(item.artist)}
                 </Text>
             </View>
 
+            {/* Like button */}
             <Pressable
                 onPress={handleLike}
                 style={{
@@ -165,6 +177,6 @@ const TrackCard = ({ item }) => {
     );
 };
 
-export default memo(TrackCard);
+export default memo(TrackCard); // Memoize the component for performance optimization
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({}); // Define styles for the component

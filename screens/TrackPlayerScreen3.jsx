@@ -17,28 +17,32 @@ import { setupPlayer, addTrack } from '../controller/musicController';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
-
+// Define the Playlist component
 function Playlist() {
+  // State to manage the playlist queue and current track
   const [queue, setQueue] = useState([]);
   const [currentTrack, setCurrentTrack] = useState(0);
 
+  // Function to load the playlist
   async function loadPlaylist() {
     const queue = await TrackPlayer.getQueue();
     setQueue(queue);
   }
-
+ // Load the playlist on component mount
   useEffect(() => {
     loadPlaylist();
   }, []);
 
+  // Update the current track when playback changes
   useTrackPlayerEvents([Event.PlaybackActiveTrackChanged], (event) => {
     if(event.state == State.nextTrack) {
       TrackPlayer.getActiveTrackIndex().then((index) => setCurrentTrack(index));
     }
   });
 
+  // PlaylistItem component to render individual playlist items
   function PlaylistItem({index, title, isCurrent}) {
-
+  // Handle item press to skip to the selected track
     function handleItemPress() {
       TrackPlayer.skip(index);
     }
@@ -54,6 +58,7 @@ function Playlist() {
     );
   }
 
+  // Function to shuffle the playlist
   async function handleShuffle() {
     let queue = await TrackPlayer.getQueue();
     await TrackPlayer.reset();
@@ -78,7 +83,7 @@ function Playlist() {
     </View>
   );
 }
-
+// Controls component to render playback controls
 function Controls({ onShuffle }) {
   const playerState = usePlaybackState();
 
@@ -122,8 +127,7 @@ function Controls({ onShuffle }) {
   );
 }
 
-
-
+// TrackProgress component to render track progress
 function TrackProgress() {
   const { position, duration } = useProgress(200);
 
@@ -142,13 +146,14 @@ function TrackProgress() {
   );
 }
 
-
+// Header component to render track information
 function Header() {
   const [info, setInfo] = useState({});
   useEffect(() => {
     setTrackInfo();
   }, []);
 
+   // Update track information when playback changes
   useTrackPlayerEvents([Event.PlaybackActiveTrackChanged], (event) => {
     if(event.state == State.nextTrack) {
       setTrackInfo();
@@ -169,7 +174,7 @@ function Header() {
   );
 }
 
-
+// TrackPlayerScreen component to render the track player screen
 function TrackPlayerScreen() {
 
   const [play, setPlay] = useState(false);
@@ -183,12 +188,14 @@ function TrackPlayerScreen() {
     setup();
   }, []);
 
+  // Render loading indicator while player is being set up
   if(!play) {
     return (
         <ActivityIndicator/>
     );
   }
 
+  // Render the track player screen
   return (
     <View style={styles.container}>
       <Header/>
@@ -197,7 +204,7 @@ function TrackPlayerScreen() {
     </View>
   );
 }
-
+// Styles for the components
 const styles = StyleSheet.create({
   container: {
     flex: 1,
